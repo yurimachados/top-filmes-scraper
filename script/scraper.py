@@ -57,3 +57,20 @@ def extract_movies(soup):
     threads = min(MAX_THREADS, len(movie_links))
     with concurrent.futures.ThreadPoolExecutor(max_workers=threads) as executor:
         executor.map(extract_movie_details, movie_links)
+
+def main():
+    start_time = time.time()
+
+    # IMDB Most Popular Movies - 100 movies
+    popular_movies_url = 'https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm'
+    response = requests.get(popular_movies_url, headers=headers)
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    # Main function to extract the 100 movies from IMDB Most Popular Movies
+    extract_movies(soup)
+
+    end_time = time.time()
+    print('Total time taken: ', float(end_time - start_time))
+
+if __name__ == '__main__':
+    main()
